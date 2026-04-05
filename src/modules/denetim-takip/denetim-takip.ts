@@ -284,6 +284,10 @@ function applyArchiveFilters(): void {
   allGeriAlinanMaster = allGeriAlinanMaster.filter(record => !isArchivedByReportStore(record));
 }
 
+function normalizePocketBaseDateFilterValue(isoValue: string): string {
+  return isoValue.replace('T', ' ');
+}
+
 function getSelectedViewId(): string {
   return (document.getElementById('admin-user-filter') as HTMLSelectElement | null)?.value ?? 'my_data';
 }
@@ -310,9 +314,11 @@ async function loadMasterData(): Promise<void> {
     allStoresMaster = await pbInstance!.collection('bayiler').getFullList({ sort: 'bayiAdi' }) as StoreRecord[];
     const businessToday = getBusinessDateParts();
     const yearRange = getBusinessYearUtcRange(businessToday.year);
+    const startDbValue = normalizePocketBaseDateFilterValue(yearRange.startUtcIso);
+    const endDbValue = normalizePocketBaseDateFilterValue(yearRange.endUtcIso);
     const reportDateFilter = [
-      `((denetimTamamlanmaTarihi != "" && denetimTamamlanmaTarihi >= "${yearRange.startUtcIso}" && denetimTamamlanmaTarihi < "${yearRange.endUtcIso}")`,
-      `(denetimTamamlanmaTarihi = "" && created >= "${yearRange.startUtcIso}" && created < "${yearRange.endUtcIso}"))`,
+      `((denetimTamamlanmaTarihi != "" && denetimTamamlanmaTarihi >= "${startDbValue}" && denetimTamamlanmaTarihi < "${endDbValue}")`,
+      `(denetimTamamlanmaTarihi = "" && created >= "${startDbValue}" && created < "${endDbValue}"))`,
     ].join(' || ');
     allReportsMaster = await pbInstance!.collection('denetim_raporlari').getFullList({
       filter: reportDateFilter,

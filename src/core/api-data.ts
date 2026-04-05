@@ -52,6 +52,10 @@ import {
 
 let lastSaveRequestId = 0;
 
+function normalizePocketBaseDateFilterValue(isoValue: string): string {
+  return isoValue.replace('T', ' ');
+}
+
 function shouldApplyStoreBoundResult(version: number, bayiKodu: string): boolean {
   return getSelectedStoreVersion() == version && String(getSelectedStore()?.bayiKodu ?? '') === bayiKodu;
 }
@@ -78,8 +82,10 @@ async function loadMonthlyAuditData(): Promise<void> {
   }
 
   try {
+    const startDbValue = normalizePocketBaseDateFilterValue(businessYearRange.startUtcIso);
+    const endDbValue = normalizePocketBaseDateFilterValue(businessYearRange.endUtcIso);
     const records = await pb.collection('denetim_raporlari').getFullList<PocketBaseRecord>({
-      filter: `((denetimTamamlanmaTarihi != "" && denetimTamamlanmaTarihi >= "${businessYearRange.startUtcIso}" && denetimTamamlanmaTarihi < "${businessYearRange.endUtcIso}") || (denetimTamamlanmaTarihi = "" && created >= "${businessYearRange.startUtcIso}" && created < "${businessYearRange.endUtcIso}"))`,
+      filter: `((denetimTamamlanmaTarihi != "" && denetimTamamlanmaTarihi >= "${startDbValue}" && denetimTamamlanmaTarihi < "${endDbValue}") || (denetimTamamlanmaTarihi = "" && created >= "${startDbValue}" && created < "${endDbValue}"))`,
       expand: 'bayi',
     });
 
@@ -93,7 +99,7 @@ async function loadMonthlyAuditData(): Promise<void> {
       .map(record => String((record['expand'] as ExpandedBayiRecord | undefined)?.bayi?.bayiKodu ?? '').trim())
       .filter((code): code is string => code !== '');
 
-    const uniqueCodes = [...new Set(allAuditedCodes)];
+    const uniqueCodes: string[] = [...new Set(allAuditedCodes)];
     setAuditedThisMonth(uniqueCodes.filter(code => !revertedCodes.includes(code)));
   } catch (error) {
     debugSilentError('Aylik raporlari yukleme', error);

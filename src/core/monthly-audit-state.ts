@@ -394,10 +394,17 @@ function resolveReportDate(input: ReportLike): string {
   return createdDate !== '' ? createdDate : '';
 }
 
+function normalizePocketBaseDateFilterValue(isoValue: string): string {
+  return isoValue.replace('T', ' ');
+}
+
 function buildReportDateRangeFilter(startUtcIso: string, endUtcIso: string): string {
+  const startDbValue = normalizePocketBaseDateFilterValue(startUtcIso);
+  const endDbValue = normalizePocketBaseDateFilterValue(endUtcIso);
+
   return [
-    `((denetimTamamlanmaTarihi != "" && denetimTamamlanmaTarihi >= "${startUtcIso}" && denetimTamamlanmaTarihi < "${endUtcIso}")`,
-    `(denetimTamamlanmaTarihi = "" && created >= "${startUtcIso}" && created < "${endUtcIso}"))`,
+    `((denetimTamamlanmaTarihi != "" && denetimTamamlanmaTarihi >= "${startDbValue}" && denetimTamamlanmaTarihi < "${endDbValue}")`,
+    `(denetimTamamlanmaTarihi = "" && created >= "${startDbValue}" && created < "${endDbValue}"))`,
   ].join(' || ');
 }
 
@@ -488,8 +495,6 @@ export function buildMonthlyAuditState({
   });
 
   const uniqueStoreMap = new Map<string, AuditStoreRef>();
-  const actualRawReports: DayReport[] = [];
-  const actualAuditRefs: AuditStoreRef[] = [];
 
   reports.forEach((report) => {
     const rawDate = resolveReportDate(report);
@@ -502,12 +507,6 @@ export function buildMonthlyAuditState({
     const storeKey = resolveStoreKey(report);
     if (!storeKey || revertedStoreKeys.has(storeKey)) return;
 
-    actualRawReports.push({ date: reportDate.day });
-    actualAuditRefs.push({
-      code: storeKey,
-      timestamp: Number(reportDate.epochMilliseconds),
-      date: reportDate.day,
-    });
 
     const nextAuditRef = {
       code: storeKey,
@@ -520,9 +519,11 @@ export function buildMonthlyAuditState({
     }
   });
 
+  const uniqueActualAuditRefs = [...uniqueStoreMap.values()].sort((left, right) => right.timestamp - left.timestamp);
+  const uniqueActualReports = uniqueActualAuditRefs.map((auditRef) => ({ date: auditRef.date }));
   const manualReports = expandManualCountsToReports(settings.manualAuditData, year, month);
-  const completedReports = [...actualRawReports, ...manualReports];
-  const rawReports = [...actualRawReports, ...manualReports];
+  const completedReports = [...uniqueActualReports, ...manualReports];
+  const rawReports = [...uniqueActualReports, ...manualReports];
 
   const allWorkDays = getWorkDaysOfMonth(year, month);
   const activeWorkDays = allWorkDays.filter((day) => !settings.leaveData[getDateKey(year, month, day)]);
@@ -561,7 +562,7 @@ export function buildMonthlyAuditState({
     completedReports,
     rawReports,
     auditedStores: [
-      ...actualAuditRefs,
+      ...uniqueActualAuditRefs,
       ...manualReports.map((report, index) => ({
         code: `manual-${report.date}-${index}`,
         timestamp: Number(toBusinessZonedDateTime(new Date(Date.UTC(year, month, report.date))).epochMilliseconds),
