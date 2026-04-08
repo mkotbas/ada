@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Yönetim Paneli</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet" />
+  <link rel="stylesheet" href="../styles/components/toast.css" />
+  <link rel="stylesheet" href="admin.css" />
+</head>
+<body>
+
+  <div class="admin-panel">
+    <div class="sidebar">
+      <div class="sidebar-header">
+        <h3><i class="fas fa-cogs"></i> Yönetim Paneli</h3>
+      </div>
+      <ul class="sidebar-menu" id="module-menu"></ul>
+      <div class="sidebar-footer">
+        <div id="connection-status-container">
+          <div id="connection-status-switch" class="disconnected">
+            <div class="thumb"></div>
+          </div>
+          <span id="connection-status-text">Bağlı Değil</span>
+        </div>
+        <div id="auth-controls">
+          <button id="login-toggle-btn" class="btn-auth">
+            <i class="fas fa-sign-in-alt"></i> Giriş Yap
+          </button>
+          <button id="logout-btn" class="btn-auth" hidden>
+            <i class="fas fa-sign-out-alt"></i> Çıkış Yap
+          </button>
+
+          <div id="login-popup" hidden>
+            <form id="login-form" novalidate>
+              <h3><i class="fas fa-cloud"></i> Panele Giriş Yap</h3>
+              <input type="email" id="email-input" placeholder="E-posta" autocomplete="email" />
+              <input type="password" id="password-input" placeholder="Şifre" autocomplete="current-password" />
+              <button id="login-submit-btn" type="submit"><i class="fas fa-check"></i> Onayla</button>
+              <div id="login-error"></div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="main-content">
+      <div class="content-header">
+        <h2 id="module-title"><i class="fas fa-tachometer-alt"></i> Modül Yöneticisi</h2>
+      </div>
+      <div class="content-wrapper">
+        <div class="content-body" id="module-container">
+          <p>Lütfen yönetmek istediğiniz bir modülü sol menüden seçin.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+  <script type="module" src="./admin.ts"></script>
+
+</body>
+</html>
