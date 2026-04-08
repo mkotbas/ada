@@ -1,0 +1,107 @@
+<div id="loading-overlay" hidden>
+    <div class="spinner"></div>
+    <p>Veriler işleniyor, lütfen bekleyin...</p>
+</div>
+
+<div class="card" id="audit-tracker-manager">
+    <div class="card-header">
+        <div class="header-placeholder"></div> </div>
+    
+    <div id="upload-area" hidden>
+        <p class="empty-state-text">
+            <i class="fas fa-info-circle"></i> Sistemde görüntülenecek bayi listesi bulunamadı. Lütfen veritabanını kontrol edin.
+        </p>
+    </div>
+
+    <div id="loaded-data-area" hidden>
+         <div class="loaded-data-info">
+            <p><i class="fas fa-database"></i> Veriler buluttan yüklendi.</p>
+            <div class="data-actions">
+                </div>
+        </div>
+    </div>
+    
+    <div id="dashboard-content" hidden>
+        <div class="panel-header">
+             <h3 id="dashboard-title"></h3>
+             <div class="header-right-group">
+                <div class="view-mode-selector">
+                    <div class="btn-group" id="view-mode-toggle">
+                        <button class="btn-sm btn-primary active" data-mode="monthly">Aylık</button>
+                        <button class="btn-sm btn-light" data-mode="yearly">Yıllık</button>
+                    </div>
+                </div>
+                <div id="annual-performance-indicator"></div>
+             </div>
+        </div>
+       
+        <div id="denetim-takip-consistency-warning" class="consistency-warning-banner" hidden role="alert" aria-live="polite"></div>
+
+        <div class="dashboard-grid">
+            <div class="stat-card" id="work-days-card">
+                <span><i class="fas fa-briefcase"></i> Kalan İş Günü</span>
+                <p id="work-days-count">0</p>
+            </div>
+            <div class="stat-card warning" id="today-required-card">
+                <span><i class="fas fa-tasks"></i> Bugün Gereken FiDe</span>
+                <p id="today-required-count">0</p>
+            </div>
+            <div class="stat-card">
+                <span><i class="fas fa-bullseye"></i> <span id="target-label">Aylık Denetim Hedefi</span></span>
+                <p id="total-stores-count">0</p>
+            </div>
+            <div class="stat-card completed">
+                <span><i class="fas fa-check"></i> <span id="audited-label">Bu Ay Denetlenen</span></span>
+                <p id="audited-stores-count">0</p>
+            </div>
+            <div class="stat-card remaining">
+                <span><i class="fas fa-hourglass-start"></i> Hedefe Kalan</span>
+                <p id="remaining-stores-count">0</p>
+            </div>
+        </div>
+
+        <div class="admin-user-selector-container" id="admin-user-selector-container" hidden>
+            <div class="filter-item">
+                <label for="admin-user-filter"><i class="fas fa-user-shield"></i> Admin: Veri Görünümü Seç</label>
+                <select id="admin-user-filter"></select>
+            </div>
+            <small>Varsayılan olarak 'Benim Verilerim' gösterilir. Global veriler veya başka bir kullanıcı için seçim yapabilirsiniz.</small>
+        </div>
+        <div class="multi-filter-container">
+            <div class="filter-item">
+                <label for="bolge-filter">Bölge</label>
+                <select id="bolge-filter"></select>
+            </div>
+            <div class="filter-item">
+                <label for="yonetmen-filter">Bayi Yönetmeni</label>
+                <select id="yonetmen-filter"></select>
+            </div>
+            <div class="filter-item">
+                <label for="sehir-filter">Şehir</label>
+                <select id="sehir-filter"></select>
+            </div>
+            <div class="filter-item">
+                <label for="ilce-filter">İlçe</label>
+                <select id="ilce-filter"></select>
+            </div>
+        </div>
+
+        <div class="audit-lists-container">
+            <div class="audit-list-column">
+                <div class="list-header-wrapper">
+                    <h4 id="remaining-list-title"><i class="fas fa-list-ul"></i> Denetlenecek Bayiler</h4>
+                    <select id="local-city-filter" class="header-select" title="Şehre Göre Süz">
+                        <option value="Tümü">Tüm Şehirler</option>
+                    </select>
+                </div>
+                <div id="denetlenecek-bayiler-container"></div>
+            </div>
+            <div class="audit-list-column">
+                <div class="list-header-wrapper">
+                    <h4 id="audited-list-title"><i class="fas fa-check-double"></i> Bu Ay Denetlenenler</h4>
+                </div>
+                <div id="denetlenen-bayiler-container"></div>
+            </div>
+        </div>
+    </div>
+</div>
