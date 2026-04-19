@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Denetim Formu</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="stylesheet" href="./styles/base.css" />
+  <link rel="stylesheet" href="./styles/main.css" />
+  <link rel="stylesheet" href="./styles/components/toast.css" />
+  <link rel="stylesheet" href="./styles/components/performance-table.css" />
+  <link rel="stylesheet" href="./styles/components/store-list.css" />
+</head>
+<body>
+
+  <div id="loading-overlay" hidden>
+    <div class="spinner"></div>
+    <p>İşlem yapılıyor, lütfen bekleyin...</p>
+  </div>
+
+  <div class="container">
+
+    <div class="top-controls">
+      <div class="backup-controls">
+        <button id="toggle-backup-manager-btn" class="btn-primary btn-sm">
+          <i class="fas fa-tools"></i> <span>Yönetim Paneli</span>
+        </button>
+      </div>
+      <div class="right-controls">
+
+        <div id="connection-status-container">
+          <div id="connection-status-switch" class="disconnected">
+            <div class="thumb"></div>
+          </div>
+          <span id="connection-status-text">Bağlı Değil</span>
+        </div>
+
+        <div id="auth-controls">
+          <button id="login-toggle-btn" class="btn-success btn-sm">
+            <i class="fas fa-sign-in-alt"></i> Giriş Yap
+          </button>
+          <button id="logout-btn" class="btn-danger btn-sm" hidden>
+            <i class="fas fa-sign-out-alt"></i> Çıkış Yap
+          </button>
+
+          <div id="login-popup" hidden>
+            <h3><i class="fas fa-cloud"></i> Bulut Sistemine Giriş</h3>
+            <input type="email" id="email-input" placeholder="E-posta" autocomplete="email" />
+            <input type="password" id="password-input" placeholder="Şifre" autocomplete="current-password" />
+            <button id="login-submit-btn" class="btn-primary btn-sm">
+              <i class="fas fa-check"></i> Onayla
+            </button>
+            <div id="login-error"></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="card" id="store-selection-card">
+      <div id="store-selection-area">
+        <h2 class="store-selection-title">1. Adım: Denetlenecek Bayiyi Arayın ve Seçin</h2>
+        <div class="store-search-shell" role="search" aria-label="Bayi arama alanı">
+          <span class="store-search-icon" aria-hidden="true">
+            <i class="fas fa-search"></i>
+          </span>
+          <input type="text" id="store-search-input"
+            placeholder="Bayi adı veya kodu ile aramaya başlayın..." />
+        </div>
+        <button id="new-report-btn" class="btn-warning btn-sm new-report-btn"
+          title="Mevcut formu boşaltır ve temiz bir rapor sayfası açar.">
+          <i class="fas fa-file"></i> Yeni Rapor / Formu Temizle
+        </button>
+        <div id="store-list"></div>
+      </div>
+    </div>
+
+    <div class="card" id="initialization-error" hidden>
+      <h2><i class="fas fa-exclamation-triangle"></i> Başlatma Hatası</h2>
+      <p>
+        <b>FiDe Soru Listesi</b> buluttan okunamadı. Lütfen sisteme giriş yaptığınızdan
+        ve internet bağlantınız olduğundan emin olun. Form, geçici olarak varsayılan
+        sorularla yüklendi.
+      </p>
+    </div>
+
+    <div id="form-content"></div>
+
+    <button class="floating-mail-button" id="generate-email-btn"
+      type="button"
+      aria-label="E-posta taslağı oluştur"
+      title="Formdaki tüm verileri kullanarak nihai e-posta taslağını oluşturur ve raporu kaydeder.">
+      <i class="fas fa-envelope" aria-hidden="true"></i>
+    </button>
+
+  </div>
+
+  <script type="module" src="./main.ts"></script>
+
+</body>
+</html>

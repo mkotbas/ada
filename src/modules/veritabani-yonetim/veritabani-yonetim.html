@@ -1,0 +1,164 @@
+<div id="db-manager-wrapper">
+    
+    <div class="section-container">
+        <div class="card-header-flex">
+            <h2><i class="fas fa-chart-pie"></i> Sistem Durumu & İstatistikler</h2>
+            <button id="btn-refresh-stats" class="btn-primary btn-sm"><i class="fas fa-sync-alt"></i> Verileri Güncelle</button>
+        </div>
+        
+        <div class="db-stats-grid">
+            <div class="db-stat-card">
+                <div class="stat-icon"><i class="fas fa-store"></i></div>
+                <div class="stat-content">
+                    <span class="stat-label">Toplam Bayi</span>
+                    <span class="stat-value" id="count-bayiler">0</span>
+                </div>
+            </div>
+            <div class="db-stat-card">
+                <div class="stat-icon"><i class="fas fa-users"></i></div>
+                <div class="stat-content">
+                    <span class="stat-label">Kayıtlı Kullanıcılar</span>
+                    <span class="stat-value" id="count-users">0</span>
+                </div>
+            </div>
+            <div class="db-stat-card">
+                <div class="stat-icon"><i class="fas fa-file-invoice"></i></div>
+                <div class="stat-content">
+                    <span class="stat-label">Tamamlanan Raporlar</span>
+                    <span class="stat-value" id="count-raporlar">0</span>
+                </div>
+            </div>
+            <div class="db-stat-card">
+                <div class="stat-icon"><i class="fas fa-table"></i></div>
+                <div class="stat-content">
+                    <span class="stat-label">Excel Veri Kaydı</span>
+                    <span class="stat-value" id="count-excel">0</span>
+                </div>
+            </div>
+            <div class="db-stat-card">
+                <div class="stat-icon"><i class="fas fa-mobile-alt"></i></div>
+                <div class="stat-content">
+                    <span class="stat-label">Kayıtlı Cihazlar</span>
+                    <span class="stat-value" id="count-cihazlar">0</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card db-table-card">
+        <h2><i class="fas fa-broom"></i> Veri Bakım ve Temizlik</h2>
+        <p class="warning-text"><i class="fas fa-exclamation-triangle"></i> DİKKAT: Yapılan işlemler kalıcıdır. Kullanıcı silerken veri aktarımı yapabilirsiniz.</p>
+        <div class="table-responsive">
+            <table class="db-management-table">
+                <thead>
+                    <tr>
+                        <th class="col-func">İşlem Fonksiyonu</th>
+                        <th class="col-desc">İşlem Açıklaması</th>
+                        <th class="col-impact">Etki Durumu</th>
+                        <th class="col-action">Eylem</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Temizlik & Bakım</strong></td>
+                        <td>Yetim cihazları, mükerrer geri alma kayıtlarını, tamamlanmamış raporları ve seçilen bakım kalemlerini güvenli aşamalarla analiz edip temizler.</td>
+                        <td><span class="badge badge-warning">Bakım</span></td>
+                        <td class="action-cell">
+                            <button id="btn-action-clean-maintenance" class="btn-success btn-sm" title="Temizliği Başlat"><i class="fas fa-broom"></i></button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>Kullanıcıyı Sistemden Sil</strong></td>
+                        <td>Kullanıcıyı ve cihazlarını siler. Raporları aktarma/silme seçeneği sunar.</td>
+                        <td><span class="badge badge-danger">Kritik</span></td>
+                        <td class="action-cell">
+                            <button id="btn-action-user-delete" class="btn-danger btn-sm"><i class="fas fa-user-minus"></i> Kullanıcıyı Sil</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>Excel Eşleştirmelerini Sıfırla</strong></td>
+                        <td>Excel yükleme sihirbazındaki tüm sütun eşleştirme ayarlarını siler.</td>
+                        <td><span class="badge badge-warning">Ayar</span></td>
+                        <td class="action-cell">
+                            <button id="btn-action-reset-mappings" class="btn-warning btn-sm"><i class="fas fa-map-signs"></i> Ayarları Sıfırla</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>Excel Puan Verileri</strong></td>
+                        <td>Buluta yüklenmiş ham puan tablolarını temizler.</td>
+                        <td><span class="badge badge-warning">Bakım</span></td>
+                        <td class="action-cell">
+                            <button id="btn-clear-excel" class="btn-danger btn-sm"><i class="fas fa-trash"></i></button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>Denetim Raporları</strong></td>
+                        <td>Tüm geçmiş denetim formlarını ve verilerini siler.</td>
+                        <td><span class="badge badge-danger">Kritik</span></td>
+                        <td class="action-cell">
+                            <button id="btn-clear-reports" class="btn-danger btn-sm"><i class="fas fa-file-excel"></i></button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>Geri Al Logları</strong></td>
+                        <td>Denetim geri alma geçmişini ve istatistiklerini temizler.</td>
+                        <td><span class="badge badge-secondary">Log</span></td>
+                        <td class="action-cell">
+                            <button id="btn-clear-undone" class="btn-warning btn-sm"><i class="fas fa-undo"></i></button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="card db-table-card">
+        <h2><i class="fas fa-cloud-download-alt"></i> Yapılandırma Yedekleme & Geri Yükleme</h2>
+        <div class="table-responsive">
+            <table class="db-management-table">
+                <thead>
+                    <tr>
+                        <th class="col-backup-name">Yedekleme İşlemi</th>
+                        <th class="col-backup-scope">Kapsam ve Detay</th>
+                        <th class="col-backup-type">Dosya Türü</th>
+                        <th class="col-backup-action">Eylem</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Sistem Ayarlarını Yedekle</strong></td>
+                        <td>Soru listesi ve mail şablonu gibi ayarları seçerek dışa aktarır.</td>
+                        <td><code>JSON</code></td>
+                        <td class="action-cell">
+                            <button id="btn-export-settings" class="btn-success btn-sm" title="Ayarları Seç ve Yedekle"><i class="fas fa-download"></i></button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>Yedekten Geri Yükle</strong></td>
+                        <td>JSON yedeğini analiz eder ve seçilen ayarları geri yükler.</td>
+                        <td><code>JSON</code></td>
+                        <td class="action-cell">
+                            <label for="input-import-settings" class="btn-primary btn-sm"  title="Yedek Dosyası Seç">
+                                <i class="fas fa-upload"></i>
+                            </label>
+                            <input type="file" id="input-import-settings" accept=".json" hidden>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div id="db-common-modal" class="db-modal-overlay" hidden>
+        <div class="db-modal-content">
+            <div class="db-modal-header">
+                <h3 id="modal-title">Başlık</h3>
+                <button class="db-modal-close" id="btn-close-modal"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="db-modal-body" id="modal-body">
+                </div>
+            <div class="db-modal-footer" id="modal-footer">
+                </div>
+        </div>
+    </div>
+</div>

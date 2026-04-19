@@ -1,0 +1,510 @@
+
+
+/* Modern görünürlük kuralı */
+[hidden] { display: none !important; }
+
+.empty-state-text{ font-size: 13px; color: var(--light-text-secondary); margin: 20px; text-align: center; }
+/* --- GÖRSEL GÜNCELLEME İÇİN EKLENEN DEĞİŞKENLER --- */
+:root {
+    --light-bg: #ffffff;
+    --light-border: #e5e7eb;
+    --light-text-primary: #1f2937;
+    --light-text-secondary: #6b7280;
+    --light-container-bg: #f9fafb;
+    --info-bg: #eef2ff;
+    --info-border: #c7d2fe;
+    --info-text: #3730a3;
+    --warning-color: #f97316;
+    --success-color: #16a34a;
+}
+
+#module-container {
+    background-color: transparent;
+    padding: 0;
+}
+
+/* --- Genel Buton Stilleri --- */
+.btn-primary, .btn-warning, .btn-danger, .btn-success, .btn-secondary, .btn-light {
+    text-decoration: none; cursor: pointer; border: none; border-radius: 6px;
+    padding: 10px 16px; font-weight: 600; transition: all 0.3s ease;
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
+.btn-sm { padding: 6px 12px; font-size: 12px; }
+.btn-primary { background-color: #3b82f6; color: white; }
+.btn-danger { background-color: #ef4444; color: white; }
+.btn-success { background-color: var(--success-color); color: white; }
+.btn-warning { background-color: var(--warning-color); color: white; }
+.btn-light { background-color: #f3f4f6; color: #374151; border: 1px solid #d1d5db; }
+
+.btn-primary:hover { background-color: #2563eb; }
+.btn-danger:hover { background-color: #dc2626; }
+.btn-success:hover { background-color: #15803d; }
+.btn-warning:hover { background-color: #ea580c; }
+.btn-light:hover { background-color: #e5e7eb; }
+
+/* --- Modül Ana Yapısı --- */
+.card-header {
+    display: flex; justify-content: space-between; align-items: center;
+    flex-wrap: wrap; gap: 10px; margin-bottom: 20px;
+}
+.header-placeholder { flex-grow: 1; }
+
+.loaded-data-info {
+    padding: 15px; background-color: var(--info-bg);
+    border: 1px solid var(--info-border); border-radius: 8px; margin-bottom: 20px;
+    display: flex; justify-content: space-between; align-items: center;
+    flex-wrap: wrap; gap: 10px;
+}
+.loaded-data-info p {
+    color: var(--info-text); flex-grow: 1; font-weight: 500;
+    font-size: 13px; margin: 0; display: flex; align-items: center; gap: 8px;
+}
+
+#dashboard-content {
+    background-color: var(--light-bg);
+    border: 1px solid var(--light-border);
+    border-radius: 12px;
+    padding: 25px;
+}
+
+/* --- Başlık Sağ Grup ve Toggle Butonları --- */
+.panel-header {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 20px; padding-bottom: 15px;
+    flex-wrap: wrap; gap: 15px; border-bottom: 1px solid var(--light-border);
+}
+
+.header-right-group {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.view-mode-selector {
+    display: flex;
+    align-items: center;
+}
+
+.btn-group {
+    display: inline-flex;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: #f3f4f6;
+}
+
+.btn-group button {
+    border-radius: 0;
+    margin: 0;
+    border: none;
+    box-shadow: none;
+}
+
+.btn-group button.active {
+    pointer-events: none;
+}
+
+.btn-group button:not(:last-child) {
+    border-right: 1px solid #d1d5db;
+}
+
+/* --- Dashboard Geri Kalanı --- */
+.panel-header h3 {
+    margin: 0; font-size: 20px; font-weight: 600;
+    display: flex; align-items: center; gap: 10px;
+    color: var(--light-text-primary);
+}
+
+#annual-performance-indicator { width: 100%; min-width: 250px; max-width: 350px; }
+.annual-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; gap: 10px; }
+.annual-header h4 {
+    margin: 0; font-size: 14px; font-weight: 600;
+    display: flex; align-items: center; gap: 8px;
+    color: var(--light-text-secondary);
+}
+.annual-progress-text { font-size: 14px; font-weight: bold; color: #3b82f6; }
+.progress-bar { width: 100%; background-color: var(--light-border); border-radius: 20px; overflow: hidden; height: 22px; }
+
+
+.dashboard-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; margin-bottom: 25px; }
+
+/* --- Bilgi Kartları Hizalama --- */
+.stat-card {
+    background-color: var(--light-container-bg);
+    padding: 15px; border-radius: 8px;
+    border: 1px solid var(--light-border);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    min-height: 100px;
+}
+
+.stat-card span {
+    font-size: 13px; color: var(--light-text-secondary);
+    display: flex; align-items: center; justify-content: center; gap: 6px; margin-bottom: 8px;
+    width: 100%;
+}
+
+.stat-card p { 
+    font-size: 28px; font-weight: bold; margin: 0; 
+    color: var(--light-text-primary);
+    width: 100%;
+}
+
+/* Tamamlanan kartı stili */
+.stat-card.completed span i { color: var(--success-color); }
+.stat-card.completed p { color: var(--success-color); }
+
+/* Bugün Gereken (Uyarı) kartı stili */
+.stat-card.warning {
+    background-color: #fff9f0;
+    border-color: #f59e0b;
+}
+.stat-card.warning span, 
+.stat-card.warning p {
+    color: #d97706;
+}
+
+.multi-filter-container {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px; padding: 20px;
+    background-color: var(--light-bg);
+    border: 1px solid var(--light-border);
+    border-radius: 12px; margin-bottom: 25px;
+}
+.filter-item label { display: block; font-size: 12px; font-weight: 600; margin-bottom: 5px; color: var(--light-text-secondary); }
+.filter-item select {
+    width: 100%; padding: 10px;
+    border: 1px solid var(--light-border);
+    border-radius: 6px;
+    background-color: var(--light-bg);
+    color: var(--light-text-primary);
+}
+
+.audit-lists-container { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; align-items: stretch; }
+.audit-list-column {
+    display: flex; flex-direction: column;
+    background-color: var(--light-container-bg);
+    border-radius: 12px; border: 1px solid var(--light-border);
+    overflow: hidden; max-height: 745px;
+}
+
+.list-header-wrapper {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 15px 20px; border-bottom: 1px solid var(--light-border);
+    background-color: var(--light-bg); flex-shrink: 0;
+}
+
+.list-header-wrapper h4 {
+    font-size: 16px; font-weight: 600; margin: 0;
+    display: flex; align-items: center; gap: 8px;
+    color: var(--light-text-primary);
+}
+
+.header-select {
+    padding: 6px 10px; border-radius: 6px; border: 1px solid var(--light-border);
+    font-size: 13px; color: var(--light-text-primary);
+    background-color: #fff; cursor: pointer; max-width: 160px;
+}
+
+#denetlenecek-bayiler-container, #denetlenen-bayiler-container { 
+    padding: 0; flex: 1; min-height: 0; overflow-y: auto;
+}
+
+.store-list { list-style-type: none; padding: 0; margin: 0; }
+.store-list-item {
+    padding: 10px 20px; border-bottom: 1px solid var(--light-border);
+    font-size: 13px; color: var(--light-text-primary);
+    background-color: var(--light-container-bg);
+}
+
+/* Bayi adı ve Geri Al butonu yerleşim ayarları */
+.completed-item { display: flex; justify-content: space-between; align-items: center; }
+.completed-item span { 
+    white-space: nowrap; 
+    overflow: hidden; 
+    text-overflow: ellipsis; 
+    min-width: 0; 
+    margin-right: 10px; 
+    flex: 1;
+}
+.completed-item .btn-revert-audit { flex-shrink: 0; }
+
+.region-container { margin: 10px; border: 1px solid var(--light-border); border-radius: 8px; overflow: hidden; }
+.region-header {
+    padding: 10px 15px; background-color: #f3f4f6;
+    font-weight: bold; border-bottom: 1px solid var(--light-border);
+    color: var(--light-text-secondary);
+}
+.region-container .store-list-item { background-color: var(--light-bg); }
+
+.empty-list-message { text-align: center; padding: 20px; color: var(--light-text-secondary); font-style: italic; }
+
+
+
+#loading-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.8); display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 9999; color: white; }
+.spinner { border: 8px solid #4b5563; border-top: 8px solid #3b82f6; border-radius: 50%; width: 60px; height: 60px; animation: spin 1s linear infinite; margin-bottom: 20px; }
+@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+/* Native progress (Talimat: JS style yok) */
+.progress-bar { display: flex; align-items: center; gap: 10px; padding: 0 10px; box-sizing: border-box; }
+.progress-native { width: 100%; height: 12px; }
+.progress-label { font-size: 12px; font-weight: 700; color: var(--light-text-secondary); min-width: 40px; text-align: right; }
+
+
+.consistency-warning-banner {
+    margin-bottom: 18px;
+    padding: 12px 14px;
+    border-radius: 10px;
+    border: 1px solid #fdba74;
+    background: #fff7ed;
+    color: #9a3412;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.frequency-progress-section {
+    margin-top: 24px;
+    margin-bottom: 24px;
+    padding: 20px;
+    border: 1px solid var(--light-border);
+    border-radius: 10px;
+    background: #fcfcfd;
+}
+
+.frequency-progress-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 16px;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+}
+
+.frequency-progress-header h4 {
+    margin: 0 0 6px;
+    font-size: 16px;
+    color: var(--light-text-primary);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.frequency-progress-header p,
+.frequency-overview-meta p {
+    margin: 0;
+    color: var(--light-text-secondary);
+    font-size: 13px;
+}
+
+.frequency-progress-filters {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.compact-filter {
+    min-width: 200px;
+}
+
+.frequency-summary-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 12px;
+    margin: 16px 0;
+}
+
+.frequency-mini-card {
+    border: 1px solid var(--light-border);
+    border-radius: 8px;
+    padding: 14px;
+    background: #fff;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.frequency-mini-card-label {
+    font-size: 12px;
+    color: var(--light-text-secondary);
+}
+
+.frequency-mini-card-value {
+    font-size: 24px;
+    color: var(--light-text-primary);
+}
+
+.frequency-mini-card.is-complete {
+    background: #f0fdf4;
+    border-color: #bbf7d0;
+}
+
+.frequency-mini-card.is-over {
+    background: #eff6ff;
+    border-color: #bfdbfe;
+}
+
+.frequency-mini-card.is-progress {
+    background: #fffbeb;
+    border-color: #fde68a;
+}
+
+.frequency-mini-card.is-not-started {
+    background: #fff7ed;
+    border-color: #fed7aa;
+}
+
+.frequency-mini-card.is-undefined {
+    background: #f9fafb;
+    border-color: #e5e7eb;
+}
+
+.frequency-table-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 12px;
+}
+
+.frequency-table-toolbar-left {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+#frequency-visible-count-label {
+    font-size: 13px;
+    color: var(--light-text-primary);
+}
+
+#frequency-sort-hint {
+    font-size: 12px;
+    color: var(--light-text-secondary);
+}
+
+.frequency-table-actions {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.frequency-view-toggle.active {
+    background: #e5e7eb;
+    border: 1px solid #d1d5db;
+    color: #111827;
+    pointer-events: none;
+}
+
+.frequency-table-wrapper {
+    overflow: auto;
+    border: 1px solid var(--light-border);
+    border-radius: 10px;
+    background: #fff;
+    max-height: 520px;
+}
+
+.frequency-table-wrapper.is-preview {
+    max-height: none;
+}
+
+.frequency-progress-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 760px;
+    border: 1px solid var(--light-border);
+}
+
+.frequency-progress-table th,
+.frequency-progress-table td {
+    padding: 14px 14px;
+    border: 1px solid var(--light-border);
+    text-align: left;
+    font-size: 13px;
+    vertical-align: middle;
+}
+
+.frequency-progress-table th {
+    font-size: 12px;
+    color: var(--light-text-secondary);
+    background: #f8fafc;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+}
+
+
+/* Talimat doğrultusunda: Frekans tablosunda sayısal sütunları başlık altına ortala */
+#audit-tracker-manager .frequency-progress-table th:nth-child(4),
+#audit-tracker-manager .frequency-progress-table th:nth-child(5),
+#audit-tracker-manager .frequency-progress-table th:nth-child(6),
+#audit-tracker-manager .frequency-progress-table th:nth-child(7),
+#audit-tracker-manager .frequency-progress-table th:nth-child(8),
+#audit-tracker-manager .frequency-progress-table td:nth-child(4),
+#audit-tracker-manager .frequency-progress-table td:nth-child(5),
+#audit-tracker-manager .frequency-progress-table td:nth-child(6),
+#audit-tracker-manager .frequency-progress-table td:nth-child(7),
+#audit-tracker-manager .frequency-progress-table td:nth-child(8) {
+    text-align: center;
+}
+
+.frequency-progress-table tbody tr:hover {
+    background: #f8fafc;
+}
+
+.frequency-status-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px 10px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.frequency-status-badge.baslanmadi {
+    background: #fff7ed;
+    color: #c2410c;
+}
+
+.frequency-status-badge.devam-ediyor {
+    background: #fffbeb;
+    color: #b45309;
+}
+
+.frequency-status-badge.tamamlandi {
+    background: #f0fdf4;
+    color: #15803d;
+}
+
+.frequency-status-badge.asildi {
+    background: #eff6ff;
+    color: #1d4ed8;
+}
+
+.frequency-status-badge.tanimsiz {
+    background: #f3f4f6;
+    color: #4b5563;
+}
+
+@media (max-width: 768px) {
+    .frequency-progress-section {
+        padding: 16px;
+    }
+
+    .compact-filter {
+        min-width: 100%;
+    }
+
+    .frequency-table-actions {
+        width: 100%;
+    }
+
+    .frequency-view-toggle {
+        flex: 1 1 auto;
+    }
+}
