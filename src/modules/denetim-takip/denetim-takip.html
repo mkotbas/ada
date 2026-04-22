@@ -1,0 +1,167 @@
+<div id="loading-overlay" hidden>
+    <div class="spinner"></div>
+    <p>Veriler işleniyor, lütfen bekleyin...</p>
+</div>
+
+<div class="card" id="audit-tracker-manager">
+    <div class="card-header">
+        <div class="header-placeholder"></div> </div>
+    
+    <div id="upload-area" hidden>
+        <p class="empty-state-text">
+            <i class="fas fa-info-circle"></i> Sistemde görüntülenecek bayi listesi bulunamadı. Lütfen veritabanını kontrol edin.
+        </p>
+    </div>
+
+    <div id="loaded-data-area" hidden>
+         <div class="loaded-data-info">
+            <p><i class="fas fa-database"></i> Veriler buluttan yüklendi.</p>
+            <div class="data-actions">
+                </div>
+        </div>
+    </div>
+    
+    <div id="dashboard-content" hidden>
+        <div class="panel-header">
+             <h3 id="dashboard-title"></h3>
+             <div class="header-right-group">
+                <div class="view-mode-selector">
+                    <div class="btn-group" id="view-mode-toggle">
+                        <button class="btn-sm btn-primary active" data-mode="monthly">Aylık</button>
+                        <button class="btn-sm btn-light" data-mode="yearly">Yıllık</button>
+                    </div>
+                </div>
+                <div id="annual-performance-indicator"></div>
+             </div>
+        </div>
+       
+        <div id="denetim-takip-consistency-warning" class="consistency-warning-banner" hidden role="alert" aria-live="polite"></div>
+
+        <div class="dashboard-grid">
+            <div class="stat-card" id="work-days-card">
+                <span><i class="fas fa-briefcase"></i> Kalan İş Günü</span>
+                <p id="work-days-count">0</p>
+            </div>
+            <div class="stat-card warning" id="today-required-card">
+                <span><i class="fas fa-tasks"></i> Bugün Gereken FiDe</span>
+                <p id="today-required-count">0</p>
+            </div>
+            <div class="stat-card">
+                <span><i class="fas fa-bullseye"></i> <span id="target-label">Aylık Denetim Hedefi</span></span>
+                <p id="total-stores-count">0</p>
+            </div>
+            <div class="stat-card completed">
+                <span><i class="fas fa-check"></i> <span id="audited-label">Bu Ay Denetlenen</span></span>
+                <p id="audited-stores-count">0</p>
+            </div>
+            <div class="stat-card remaining">
+                <span><i class="fas fa-hourglass-start"></i> Hedefe Kalan</span>
+                <p id="remaining-stores-count">0</p>
+            </div>
+        </div>
+
+        <div class="admin-user-selector-container" id="admin-user-selector-container" hidden>
+            <div class="filter-item">
+                <label for="admin-user-filter"><i class="fas fa-user-shield"></i> Admin: Veri Görünümü Seç</label>
+                <select id="admin-user-filter" name="admin-user-filter"></select>
+            </div>
+            <small>Varsayılan olarak 'Benim Verilerim' gösterilir. Global veriler veya başka bir kullanıcı için seçim yapabilirsiniz.</small>
+        </div>
+        <div class="multi-filter-container">
+            <div class="filter-item">
+                <label for="bolge-filter">Bölge</label>
+                <select id="bolge-filter" name="bolge-filter"></select>
+            </div>
+            <div class="filter-item">
+                <label for="yonetmen-filter">Bayi Yönetmeni</label>
+                <select id="yonetmen-filter" name="yonetmen-filter"></select>
+            </div>
+            <div class="filter-item">
+                <label for="sehir-filter">Şehir</label>
+                <select id="sehir-filter" name="sehir-filter"></select>
+            </div>
+            <div class="filter-item">
+                <label for="ilce-filter">İlçe</label>
+                <select id="ilce-filter" name="ilce-filter"></select>
+            </div>
+        </div>
+
+
+        <div class="audit-lists-container">
+            <div class="audit-list-column">
+                <div class="list-header-wrapper">
+                    <h4 id="remaining-list-title"><i class="fas fa-list-ul"></i> Denetlenecek Bayiler</h4>
+                    <select id="local-city-filter" name="local-city-filter" class="header-select" title="Şehre Göre Süz">
+                        <option value="Tümü">Tüm Şehirler</option>
+                    </select>
+                </div>
+                <div id="denetlenecek-bayiler-container"></div>
+            </div>
+            <div class="audit-list-column">
+                <div class="list-header-wrapper">
+                    <h4 id="audited-list-title"><i class="fas fa-check-double"></i> Bu Ay Denetlenenler</h4>
+                </div>
+                <div id="denetlenen-bayiler-container"></div>
+            </div>
+        </div>
+
+        <section class="frequency-progress-section" aria-labelledby="frequency-progress-title">
+            <div class="frequency-progress-header">
+                <div>
+                    <h4 id="frequency-progress-title"><i class="fas fa-wave-square"></i> Frekans Takip Özeti</h4>
+                    <p id="frequency-progress-year-label">Mevcut yıl frekans takibi</p>
+                </div>
+                <div class="frequency-progress-filters">
+                    <div class="filter-item compact-filter">
+                        <label for="frequency-status-filter">Frekans Durumu</label>
+                        <select id="frequency-status-filter" name="frequency-status-filter">
+                            <option value="tum">Tümü</option>
+                            <option value="baslanmadi">Başlanmadı</option>
+                            <option value="devam-ediyor">Devam Ediyor</option>
+                            <option value="tamamlandi">Tamamlandı</option>
+                            <option value="asildi">Hedef Aşıldı</option>
+                            <option value="tanimsiz">Frekans Tanımsız</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="frequency-overview-meta">
+                <p><i class="fas fa-info-circle"></i> Frekans tanımlı bayi sayısı: <strong id="frequency-total-configured-count">0</strong></p>
+            </div>
+
+            <div class="frequency-summary-cards" id="frequency-summary-cards"></div>
+
+            <div class="frequency-table-toolbar">
+                <div class="frequency-table-toolbar-left">
+                    <strong id="frequency-visible-count-label">İlk 10 kayıt gösteriliyor</strong>
+                    <span id="frequency-sort-hint">Sıralama: frekansı yüksek bayiler üstte</span>
+                </div>
+                <div class="frequency-table-actions" role="group" aria-label="Frekans liste görünümü">
+                    <button type="button" class="btn-light btn-sm frequency-view-toggle active" data-frequency-view="preview">İlk 10</button>
+                    <button type="button" class="btn-light btn-sm frequency-view-toggle" data-frequency-view="all">Tümünü Göster</button>
+                    <button type="button" class="btn-light btn-sm frequency-view-toggle" data-frequency-view="issues">Sadece Sorunlular</button>
+                </div>
+            </div>
+
+            <div class="frequency-table-wrapper is-preview" id="frequency-table-wrapper">
+                <table class="frequency-progress-table">
+                    <thead>
+                        <tr>
+                            <th>Bayi Kodu</th>
+                            <th>Bayi Adı</th>
+                            <th>Bölge</th>
+                            <th>Frekans</th>
+                            <th>Gerçekleşen</th>
+                            <th>Kalan</th>
+                            <th>%</th>
+                            <th>Durum</th>
+                        </tr>
+                    </thead>
+                    <tbody id="frequency-progress-table-body"></tbody>
+                </table>
+                <p class="empty-list-message" hidden id="frequency-progress-empty">Filtreye uygun bayi bulunamadı.</p>
+            </div>
+        </section>
+    </div>
+</div>

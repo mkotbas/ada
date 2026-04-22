@@ -1,0 +1,762 @@
+<div class="module-container" id="bayi-yonetici-container">
+  <div class="toolbar">
+    <button class="btn btn-primary" id="btn-yeni-bayi">
+      <i class="fas fa-plus"></i> Yeni Bayi Ekle
+    </button>
+    <div class="toolbar-filters">
+      <div class="filter-group">
+        <label for="kontrol-filtresi">Kontrol Mekanizmas&inodot;:</label>
+        <select class="form-control" id="kontrol-filtresi">
+          <option value="all">T&uuml;m Bayiler</option>
+          <option value="no_bolge">B&ouml;lgesi Olmayanlar</option>
+          <option value="no_sehir">&Scedil;ehri Olmayanlar</option>
+          <option value="no_ilce">&Idot;l&ccedil;esi Olmayanlar</option>
+          <option value="no_bayiKodu">Bayi Kodu Olmayanlar</option>
+          <option value="no_bayiAdi">Bayi Ad&inodot; Olmayanlar</option>
+          <option value="no_yonetmen">Bayi Y&ouml;netmeni Olmayanlar</option>
+          <option value="no_email">Mail Adresi Olmayanlar</option>
+          <option value="no_uzman">Denetim Uzman&inodot; Olmayanlar</option>
+        </select>
+      </div>
+      <div class="filter-group">
+        <label for="durum-filtresi">Durum:</label>
+        <select class="form-control" id="durum-filtresi">
+          <option value="active">Aktif Bayiler</option>
+          <option value="all">T&uuml;m Bayiler</option>
+          <option value="passive">Sadece Pasif Bayiler</option>
+        </select>
+      </div>
+    </div>
+  </div>
+    <div id="loading-overlay" hidden>
+    <div class="spinner"></div>
+    <p>İşlem yapılıyor, lütfen bekleyin...</p>
+  </div>
+
+  <dialog id="excel-mapping-modal">
+    <div class="modal-content excel-mapping-content">
+      <h3><i class="fas fa-magic"></i> Excel Sütun Eşleştirme Sihirbazı</h3>
+      <p class="modal-desc-text">Yüklediğiniz Excel dosyasının yapısını anlamamız için lütfen aşağıdaki seçimleri yapın.</p>
+
+      <div class="modal-step" id="step-row-selection">
+        <p>1. Başlıklar Hangi Satırda?</p>
+        <select id="mapping-row-select"></select>
+        <div class="modal-info" id="row-preview-text">Seçilen satırın içeriği burada görünecek...</div>
+      </div>
+
+      <div id="step-column-mapping" hidden>
+        <div class="modal-step">
+          <p>2. Sütunları Eşleştirin</p>
+          <label class="modal-field-label" for="map-bayi-kodu">Bayi Kodu Sütunu:</label>
+          <select id="map-bayi-kodu"></select>
+          <div id="dide-extra-fields">
+            <label class="modal-field-label" for="map-bayi-adi">Bayi Adı Sütunu (Opsiyonel):</label>
+            <select id="map-bayi-adi"></select>
+            <label class="modal-field-label" for="map-yonetmen">Yönetmen Sütunu (Opsiyonel):</label>
+            <select id="map-yonetmen"></select>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-actions">
+        <button id="mapping-cancel-btn" class="btn btn-secondary" type="button">İptal</button>
+        <button id="mapping-save-btn" class="btn btn-primary" type="button" disabled>
+          Verileri İşle <i class="fas fa-arrow-right"></i>
+        </button>
+      </div>
+    </div>
+  </dialog>
+
+<fieldset class="report-fieldset">
+    <legend>Raporlama &amp; Veri Y&ouml;netimi</legend>
+    <div class="fieldset-content-wrapper report-card-grid">
+      <section class="report-card report-export-section">
+        <div class="report-card-header">
+          <span class="report-card-icon" aria-hidden="true">
+            <i class="fas fa-chart-bar"></i>
+          </span>
+          <div class="report-card-title-group">
+            <strong>Raporlama &amp; G&ouml;r&uuml;nt&uuml;leme (D&inodot;&scedil;a Aktar)</strong>
+            <p>
+              G&ouml;r&uuml;nt&uuml;lemek veya Excel'e aktarmak istedi&gbreve;iniz
+              s&uuml;tunlar&inodot; se&ccedil;in. Hi&ccedil;biri se&ccedil;ilmezse
+              g&ouml;r&uuml;n&uuml;m s&inodot;f&inodot;rlan&inodot;r.
+            </p>
+          </div>
+        </div>
+        <div class="report-card-body">
+          <div class="checkbox-group" id="column-checkboxes"></div>
+          <div class="report-actions report-actions-split">
+            <button class="btn btn-secondary" id="btn-view-selected">
+              <i class="fas fa-eye"></i> Se&ccedil;ilenleri G&ouml;r&uuml;nt&uuml;le
+            </button>
+            <button class="btn btn-success" id="btn-export-excel">
+              <i class="fas fa-file-excel"></i> Se&ccedil;ilenleri Excel'e Aktar
+            </button>
+          </div>
+          <div class="performance-report-panel">
+            <div class="report-subcard-header">
+              <strong>FiDe / DiDe Puan Tablosu</strong>
+              <p>
+                Tek bayi veya filtre sonucundaki t&uuml;m bayiler i&ccedil;in
+                puan tablosu olu&scedil;turun.
+              </p>
+            </div>
+            <div class="performance-report-controls">
+              <div class="form-group performance-report-select-group">
+                <label>Rapor Kapsam&inodot;</label>
+                <div class="performance-report-inline-row">
+                  <div class="performance-report-picker" id="score-report-picker">
+                    <button
+                      class="form-control performance-report-picker-toggle"
+                      id="btn-toggle-score-store-picker"
+                      type="button"
+                    >
+                      Bayi se&ccedil;in
+                    </button>
+                    <div class="performance-report-picker-panel" hidden id="score-report-picker-panel">
+                      <div class="performance-report-selection-tools">
+                        <div class="performance-report-selection-summary">
+                          <span class="performance-report-selection-badge" id="score-report-selection-badge">0 seçili</span>
+                        </div>
+                        <input
+                          class="form-control performance-report-search-input"
+                          id="score-report-search-input"
+                          type="text"
+                          placeholder="Bayi kodu ara..."
+                          autocomplete="off"
+                        />
+                        <button class="btn btn-secondary" id="btn-select-all-score-stores" type="button">
+                          T&uuml;m&uuml;n&uuml; Se&ccedil;
+                        </button>
+                        <button class="btn btn-secondary" id="btn-clear-score-stores" type="button">
+                          Temizle
+                        </button>
+                      </div>
+                      <div class="performance-report-checklist" id="score-report-store-checklist"></div>
+                    </div>
+                  </div>
+                  <div class="report-actions performance-report-actions">
+                    <button class="btn btn-info" id="btn-open-score-report" type="button">
+                      <i class="fas fa-table"></i> Puan Tablosunu A&ccedil;
+                    </button>
+                  </div>
+                </div>
+                <p class="performance-report-selection-note">
+                  &Idot;stedi&gbreve;iniz kadar bayi se&ccedil;ebilirsiniz. Se&ccedil;ti&gbreve;iniz bayiler i&ccedil;in puan tablosu olu&scedil;turulur.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="report-card report-import-section">
+        <div class="report-card-header report-card-header-compact">
+          <span class="report-card-icon" aria-hidden="true">
+            <i class="fas fa-file-import"></i>
+          </span>
+          <div class="report-card-title-group">
+            <strong>Excel'den Bayi Aktar (&Idot;&ccedil;e Aktar)</strong>
+            <p>
+              S&uuml;tun e&scedil;le&scedil;tirmesi yaparak toplu bayi verisi y&uuml;kleyin.
+              Bu &ouml;zellik <code>ExcelJS</code> kullan&inodot;r.
+            </p>
+          </div>
+        </div>
+        <div class="report-card-body report-card-body-compact">
+          <div class="report-actions report-actions-single">
+            <button class="btn btn-info" id="btn-open-import-modal">
+              <i class="fas fa-file-upload"></i> Bayi Verisi Y&uuml;kle
+            </button>
+          </div>
+        </div>
+      </section>
+      <section class="report-card report-frequency-section">
+        <div class="report-card-header report-card-header-compact">
+          <span class="report-card-icon" aria-hidden="true">
+            <i class="fas fa-repeat"></i>
+          </span>
+          <div class="report-card-title-group">
+            <strong>Senelik Frekans Yükle</strong>
+            <p>
+              Bayi kodu ile senelik ziyaret adedini eşleştirerek yıllık denetim hedeflerini güncelleyin.
+            </p>
+          </div>
+        </div>
+        <div class="report-card-body report-card-body-compact">
+          <div class="report-actions report-actions-single frequency-upload-actions">
+            <button class="btn btn-info" id="btn-open-frequency-import-modal" type="button">
+              <i class="fas fa-file-excel"></i> Frekans Excel'i Yükle
+            </button>
+          </div>
+          <p class="frequency-upload-status" id="frequency-upload-status">Henüz frekans verisi yüklenmedi.</p>
+        </div>
+      </section>
+      <section class="report-card report-assign-section">
+        <div class="report-card-header report-card-header-compact">
+          <span class="report-card-icon" aria-hidden="true">
+            <i class="fas fa-users-cog"></i>
+          </span>
+          <div class="report-card-title-group">
+            <strong>Toplu Veri G&uuml;ncelleme &amp; Atama</strong>
+            <p>
+              Bayilere filtrelere g&ouml;re toplu olarak Denetim Uzman&inodot; veya
+              Y&ouml;netmen atay&inodot;n.
+            </p>
+          </div>
+        </div>
+        <div class="report-card-body report-card-body-compact">
+          <div class="report-actions report-actions-single">
+            <button class="btn btn-warning" id="btn-open-bulk-assign-modal">
+              <i class="fas fa-users-cog"></i> Filtreye G&ouml;re Atama Yap
+            </button>
+          </div>
+        </div>
+      </section>
+      <section class="report-card report-score-upload-section">
+        <div class="report-card-header report-card-header-compact">
+          <span class="report-card-icon" aria-hidden="true">
+            <i class="fas fa-file-waveform"></i>
+          </span>
+          <div class="report-card-title-group">
+            <strong>DiDe Puan Listesi Y&uuml;kle</strong>
+            <p>
+              Denetim formunda kullan&inodot;lan DiDe puan listesini buluta y&uuml;kleyin veya g&uuml;ncelleyin.
+            </p>
+          </div>
+        </div>
+        <div class="report-card-body report-card-body-compact">
+          <div class="report-actions report-actions-single score-upload-actions">
+            <div class="score-upload-button-group">
+              <label class="btn btn-info score-upload-trigger" for="score-dide-file-input">
+                <i class="fas fa-file-excel"></i> DiDe Excel'i Se&ccedil;
+              </label>
+              <button class="btn btn-danger score-delete-trigger" id="btn-delete-dide-excel" type="button" hidden>
+                <i class="fas fa-trash"></i> DiDe'yi Sil
+              </button>
+            </div>
+            <input
+              accept=".xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+              id="score-dide-file-input"
+              type="file"
+              hidden
+            />
+          </div>
+        </div>
+      </section>
+      <section class="report-card report-score-upload-section report-score-upload-section-fide">
+        <div class="report-card-header report-card-header-compact">
+          <span class="report-card-icon" aria-hidden="true">
+            <i class="fas fa-file-signature"></i>
+          </span>
+          <div class="report-card-title-group">
+            <strong>FiDe Puan Listesi Y&uuml;kle</strong>
+            <p>
+              Denetim formunda kullan&inodot;lan FiDe puan listesini buluta y&uuml;kleyin veya g&uuml;ncelleyin.
+            </p>
+          </div>
+        </div>
+        <div class="report-card-body report-card-body-compact">
+          <div class="report-actions report-actions-single score-upload-actions">
+            <div class="score-upload-button-group">
+              <label class="btn btn-info score-upload-trigger" for="score-fide-file-input">
+                <i class="fas fa-file-excel"></i> FiDe Excel'i Se&ccedil;
+              </label>
+              <button class="btn btn-danger score-delete-trigger" id="btn-delete-fide-excel" type="button" hidden>
+                <i class="fas fa-trash"></i> FiDe'yi Sil
+              </button>
+            </div>
+            <input
+              accept=".xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+              id="score-fide-file-input"
+              type="file"
+              hidden
+            />
+          </div>
+        </div>
+      </section>
+    </div>
+  </fieldset>
+  <div class="table-container">
+    <div class="spinner" hidden="" id="loading-spinner"></div>
+    <table id="bayi-table">
+      <thead>
+        <tr>
+          <th class="bayi-yoneticisi-inline-1" data-column="bolge">
+            B&ouml;lge
+          </th>
+          <th class="bayi-yoneticisi-inline-2" data-column="sehir">
+            &Scedil;ehir
+          </th>
+          <th class="bayi-yoneticisi-inline-3" data-column="ilce">
+            &Idot;l&ccedil;e
+          </th>
+          <th class="bayi-yoneticisi-inline-4" data-column="bayiKodu">
+            Bayi Kodu
+          </th>
+          <th class="bayi-yoneticisi-inline-5" data-column="bayiAdi">
+            Bayi Ad&inodot;
+          </th>
+          <th class="bayi-yoneticisi-inline-6" data-column="yonetmen">
+            Bayi Y&ouml;netmeni
+          </th>
+          <th class="bayi-yoneticisi-inline-7" data-column="email">Mail</th>
+          <th
+            class="bayi-yoneticisi-inline-8"
+            data-column="sorumlu_kullanici_email"
+          >
+            Denetim Uzman&inodot;
+          </th>
+          <th class="bayi-yoneticisi-inline-9" data-column="durum">Durum</th>
+          <th class="bayi-yoneticisi-inline-9" data-column="eylemler">
+            Eylemler
+          </th>
+        </tr>
+        <tr class="search-row">
+          <th data-column="bolge">
+            <input
+              class="column-search-input"
+              data-column="bolge"
+              id="column-search-bolge"
+              name="columnSearchBolge"
+              placeholder="B&ouml;lge ara..."
+              type="text"
+            />
+          </th>
+          <th data-column="sehir">
+            <input
+              class="column-search-input"
+              data-column="sehir"
+              id="column-search-sehir"
+              name="columnSearchSehir"
+              placeholder="&Scedil;ehir ara..."
+              type="text"
+            />
+          </th>
+          <th data-column="ilce">
+            <input
+              class="column-search-input"
+              data-column="ilce"
+              id="column-search-ilce"
+              name="columnSearchIlce"
+              placeholder="&Idot;l&ccedil;e ara..."
+              type="text"
+            />
+          </th>
+          <th data-column="bayiKodu">
+            <input
+              class="column-search-input"
+              data-column="bayiKodu"
+              id="column-search-bayi-kodu"
+              name="columnSearchBayiKodu"
+              placeholder="Kod ara..."
+              type="text"
+            />
+          </th>
+          <th data-column="bayiAdi">
+            <input
+              class="column-search-input"
+              data-column="bayiAdi"
+              id="column-search-bayi-adi"
+              name="columnSearchBayiAdi"
+              placeholder="Bayi Ad&inodot; ara..."
+              type="text"
+            />
+          </th>
+          <th data-column="yonetmen">
+            <input
+              class="column-search-input"
+              data-column="yonetmen"
+              id="column-search-yonetmen"
+              name="columnSearchYonetmen"
+              placeholder="Y&ouml;netmen ara..."
+              type="text"
+            />
+          </th>
+          <th data-column="email">
+            <input
+              class="column-search-input"
+              data-column="email"
+              id="column-search-email"
+              name="columnSearchEmail"
+              placeholder="Mail ara..."
+              type="text"
+            />
+          </th>
+          <th data-column="sorumlu_kullanici_email">
+            <input
+              class="column-search-input"
+              data-column="sorumlu_kullanici_email"
+              id="column-search-sorumlu-kullanici-email"
+              name="columnSearchSorumluKullaniciEmail"
+              placeholder="Uzman ara..."
+              type="text"
+            />
+          </th>
+          <th data-column="durum"></th>
+          <th data-column="eylemler"></th>
+        </tr>
+      </thead>
+      <tbody id="bayi-table-body"></tbody>
+    </table>
+  </div>
+  <div class="modal-overlay" hidden="" id="bayi-modal">
+    <div class="modal-content">
+      <h3 id="modal-title">Bayi Bilgileri</h3>
+      <form id="bayi-form">
+        <input id="bayi-id" name="bayiId" type="hidden" />
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="bayiKodu">Bayi Kodu (Zorunlu)</label>
+            <input class="form-control" id="bayiKodu" required="" type="text" />
+          </div>
+          <div class="form-group">
+            <label for="bayiAdi">Bayi Ad&inodot;</label>
+            <input class="form-control" id="bayiAdi" type="text" />
+          </div>
+          <div class="form-group">
+            <label for="bolge">B&ouml;lge</label>
+            <input class="form-control" id="bolge" type="text" />
+          </div>
+          <div class="form-group">
+            <label for="sehir">&Scedil;ehir</label>
+            <input class="form-control" id="sehir" type="text" />
+          </div>
+          <div class="form-group">
+            <label for="ilce">&Idot;l&ccedil;e</label>
+            <input class="form-control" id="ilce" type="text" />
+          </div>
+          <div class="form-group">
+            <label for="yonetmen">Bayi Y&ouml;netmeni</label>
+            <input class="form-control" id="yonetmen" type="text" />
+          </div>
+          <div class="form-group">
+            <label for="email">Mail Adresi</label>
+            <input class="form-control" id="email" type="email" />
+          </div>
+          <div class="form-group">
+            <label for="sorumlu_kullanici">Denetim Uzman&inodot;</label>
+            <select class="form-control" id="sorumlu_kullanici"></select>
+          </div>
+          <div class="form-group">
+            <label for="senelikFrekans">Senelik Frekans</label>
+            <input class="form-control" id="senelikFrekans" type="number" min="0" step="1" inputmode="numeric" />
+          </div>
+        </div>
+        <section class="frequency-summary-panel" id="bayi-frequency-summary" aria-live="polite">
+          <div class="frequency-summary-header">
+            <strong>Yıllık Denetim Özeti</strong>
+            <span class="frequency-summary-year" id="frequency-summary-year-label">Mevcut yıl</span>
+          </div>
+          <div class="frequency-summary-grid">
+            <article class="frequency-summary-item">
+              <span class="frequency-summary-label">Tanımlı Frekans</span>
+              <strong class="frequency-summary-value" id="frequency-target-value">-</strong>
+            </article>
+            <article class="frequency-summary-item">
+              <span class="frequency-summary-label">Gerçekleşen Denetim</span>
+              <strong class="frequency-summary-value" id="frequency-completed-value">-</strong>
+            </article>
+            <article class="frequency-summary-item">
+              <span class="frequency-summary-label">Kalan Denetim</span>
+              <strong class="frequency-summary-value" id="frequency-remaining-value">-</strong>
+            </article>
+          </div>
+          <p class="frequency-summary-note" id="frequency-summary-note">
+            Senelik frekans tanımlandığında, bu bayi için yıl içindeki denetim durumu burada gösterilir.
+          </p>
+        </section>
+        <div class="form-actions">
+          <button class="btn btn-danger" id="btn-modal-cancel" type="button">
+            &Idot;ptal
+          </button>
+          <button class="btn btn-primary" type="submit">Kaydet</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="modal-overlay" hidden="" id="frequency-import-modal">
+    <div class="modal-content modal-large">
+      <h3>Frekans Excel Aktarma Sihirbazı</h3>
+      <div id="frequency-import-step-1">
+        <h4>Adım 1: Excel Dosyasını Yükleyin</h4>
+        <p>
+          Senelik frekans ve bayi kodu alanlarını içeren <code>.xlsx</code> dosyasını seçin.
+        </p>
+        <div class="form-group">
+          <label for="frequency-file-input">Excel Dosyası:</label>
+          <input
+            accept=".xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+            class="form-control"
+            id="frequency-file-input"
+            type="file"
+          />
+        </div>
+        <div class="form-actions">
+          <button class="btn btn-danger" id="btn-frequency-import-cancel-1" type="button">İptal</button>
+          <button class="btn btn-primary" disabled="" id="btn-process-frequency-excel" type="button">
+            Dosyayı İşle &amp; Eşleştirmeye Geç
+          </button>
+        </div>
+      </div>
+      <div hidden="" id="frequency-import-step-2">
+        <h4>Adım 2: Sütunları Eşleştirin</h4>
+        <p>
+          Excel başlıklarınızı frekans alanları ile eşleştirin. Zorunlu alanlar: <code>Bayi Kodu</code> ve <code>Senelik Frekans</code>.
+        </p>
+        <div class="mapping-container-class" id="frequency-mapping-container"></div>
+        <div class="note note-warning" hidden="" id="frequency-import-warning">
+          <strong>Zorunlu Alan Uyarısı:</strong>
+          İçe aktarma için <code>Bayi Kodu</code> ve <code>Senelik Frekans</code> alanlarını eşleştirmelisiniz.
+        </div>
+        <div class="form-actions">
+          <button class="btn btn-danger" id="btn-frequency-import-cancel-2" type="button">İptal</button>
+          <button class="btn btn-success" disabled="" id="btn-execute-frequency-import" type="button">
+            <i class="fas fa-check"></i> Eşleştirmeyi Onayla ve Yükle
+          </button>
+        </div>
+      </div>
+      <div hidden="" id="frequency-import-step-3">
+        <h4>Adım 3: Yükleme Sonucu</h4>
+        <div class="import-results-class" id="frequency-import-results"></div>
+        <div class="form-actions">
+          <button class="btn btn-primary" id="btn-frequency-import-close" type="button">Kapat</button>
+        </div>
+      </div>
+      <div class="modal-loading-overlay" hidden="" id="frequency-import-loading-overlay">
+        <div class="spinner"></div>
+        <p id="frequency-import-loading-text">İşlem yürütülüyor, lütfen bekleyin...</p>
+      </div>
+    </div>
+  </div>
+  <div class="modal-overlay" hidden="" id="import-modal">
+    <div class="modal-content modal-large">
+      <h3 id="import-modal-title">Excel Bayi Aktarma Sihirbaz&inodot;</h3>
+      <div id="import-step-1">
+        <h4>Ad&inodot;m 1: Excel Dosyas&inodot;n&inodot; Y&uuml;kleyin</h4>
+        <p>
+          L&uuml;tfen yaln&inodot;zca <code>.xlsx</code> format&inodot;nda,
+          ilk sat&inodot;r&inodot; s&uuml;tun ba&scedil;l&inodot;klar&inodot;n&inodot; i&ccedil;eren
+          dosyay&inodot; se&ccedil;in.
+        </p>
+        <div class="form-group">
+          <label for="excel-file-input">Excel Dosyas&inodot;:</label>
+          <input
+            accept=".xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+            class="form-control"
+            id="excel-file-input"
+            type="file"
+          />
+        </div>
+        <div class="form-actions">
+          <button
+            class="btn btn-danger"
+            id="btn-import-modal-cancel-1"
+            type="button"
+          >
+            &Idot;ptal
+          </button>
+          <button
+            class="btn btn-primary"
+            disabled=""
+            id="btn-process-excel"
+            type="button"
+          >
+            Dosyay&inodot; &Idot;&scedil;le &amp; E&scedil;le&scedil;tirmeye
+            Ge&ccedil;
+          </button>
+        </div>
+      </div>
+      <div hidden="" id="import-step-2">
+        <h4>Ad&inodot;m 2: S&uuml;tunlar&inodot; E&scedil;le&scedil;tirin</h4>
+        <p>
+          Excel dosyan&inodot;zdaki s&uuml;tun
+          ba&scedil;l&inodot;klar&inodot;n&inodot; (sol taraf),
+          veritaban&inodot;ndaki hedef alanlarla (sa&gbreve; taraf)
+          e&scedil;le&scedil;tirin.
+        </p>
+        <div class="mapping-container-class" id="mapping-container"></div>
+        <div class="global-assignment-container">
+          <div class="mapping-row global-assignment-row">
+            <label class="excel-column-label global-label">
+              <i class="fas fa-users"></i>
+              Toplu Denetim Uzman&inodot; Atamas&inodot;
+            </label>
+            <i class="fas fa-arrow-right"></i>
+            <select
+              class="form-control db-field-select"
+              id="import-global-user-select"
+            >
+              <option value="">
+                &Idot;&ccedil;e Aktar&inodot;lan T&uuml;m Bayileri Bu
+                Kullan&inodot;c&inodot;ya Ata (Opsiyonel)
+              </option>
+            </select>
+          </div>
+        </div>
+        <div class="note note-warning" hidden="" id="import-warning">
+          <strong>Zorunlu Alan Uyar&inodot;s&inodot;:</strong>
+          &Idot;&ccedil;e aktarma i&scedil;leminin ba&scedil;lamas&inodot;
+          i&ccedil;in <code>Bayi Kodu</code> alan&inodot;n&inodot;
+          e&scedil;le&scedil;tirmeniz zorunludur.
+        </div>
+        <div class="form-actions">
+          <button
+            class="btn btn-danger"
+            id="btn-import-modal-cancel-2"
+            type="button"
+          >
+            &Idot;ptal
+          </button>
+          <button
+            class="btn btn-success"
+            disabled=""
+            id="btn-execute-import"
+            type="button"
+          >
+            <i class="fas fa-check"></i> E&scedil;le&scedil;tirmeyi Onayla ve
+            &Idot;&ccedil;e Aktar
+          </button>
+        </div>
+      </div>
+      <div hidden="" id="import-step-3">
+        <h4>Ad&inodot;m 3: &Idot;&ccedil;e Aktarma Sonucu</h4>
+        <div class="import-results-class" id="import-results"></div>
+        <div class="form-actions">
+          <button
+            class="btn btn-primary"
+            id="btn-import-modal-close"
+            type="button"
+          >
+            Kapat
+          </button>
+        </div>
+      </div>
+      <div class="modal-loading-overlay" hidden="" id="import-loading-overlay">
+        <div class="spinner"></div>
+        <p id="import-loading-text">
+          &Idot;&scedil;lem y&uuml;r&uuml;t&uuml;l&uuml;yor, l&uuml;tfen
+          bekleyin...
+        </p>
+      </div>
+    </div>
+  </div>
+  <div class="modal-overlay" hidden="" id="bulk-assign-modal">
+    <div class="modal-content">
+      <h3 id="bulk-assign-modal-title">Toplu Veri G&uuml;ncelleme ve Atama</h3>
+      <p>
+        Bayileri se&ccedil;ti&gbreve;iniz filtrelere g&ouml;re s&uuml;zerek,
+        onlara toplu olarak Denetim Uzman&inodot; veya Y&ouml;netmen
+        atay&inodot;n.
+      </p>
+      <h4>Ad&inodot;m 1: Bayileri Filtreleyin</h4>
+      <div class="bulk-assign-filters">
+        <div class="form-group">
+          <label>B&ouml;lge</label>
+          <div
+            class="checkbox-list-container"
+            id="bulk-assign-filter-bolge"
+          ></div>
+        </div>
+        <div class="form-group">
+          <label>&Scedil;ehir</label>
+          <div
+            class="checkbox-list-container"
+            id="bulk-assign-filter-sehir"
+          ></div>
+        </div>
+        <div class="form-group">
+          <label>Mevcut Y&ouml;netmen</label>
+          <div
+            class="checkbox-list-container"
+            id="bulk-assign-filter-yonetmen"
+          ></div>
+        </div>
+      </div>
+      <div class="form-group bayi-yoneticisi-inline-10">
+        <label class="bayi-yoneticisi-inline-11">
+          <input checked="" id="bulk-assign-only-unassigned" type="checkbox" />
+          Sadece atanmam&inodot;&scedil; (bilgisi bo&scedil; olan) bayileri
+          g&uuml;ncelle
+        </label>
+      </div>
+      <h4 class="bayi-yoneticisi-inline-12">
+        Ad&inodot;m 2: Atanacak Bilgiyi Se&ccedil;in
+      </h4>
+      <div class="bayi-yoneticisi-inline-13">
+        <div class="form-group bayi-yoneticisi-inline-14">
+          <label for="bulk-assign-type-select"
+            >Neyi Atamak &Idot;stiyorsunuz?</label
+          >
+          <select class="form-control" id="bulk-assign-type-select">
+            <option value="sorumlu_kullanici">
+              Denetim Uzman&inodot; Atama
+            </option>
+            <option value="yonetmen">Bayi Y&ouml;netmeni Atama</option>
+          </select>
+        </div>
+        <div
+          class="form-group bayi-yoneticisi-inline-15"
+          id="bulk-assign-user-select-container"
+        >
+          <label for="bulk-assign-user-select"
+            >Atanacak Denetim Uzman&inodot;</label
+          >
+          <select class="form-control" id="bulk-assign-user-select">
+            <option value="">
+              L&uuml;tfen bir kullan&inodot;c&inodot; se&ccedil;in...
+            </option>
+          </select>
+        </div>
+        <div
+          class="form-group bayi-yoneticisi-inline-16"
+          hidden=""
+          id="bulk-assign-text-input-container"
+        >
+          <label for="bulk-assign-text-input"
+            >Yeni Y&ouml;netmen Ad&inodot;</label
+          >
+          <input
+            class="form-control"
+            id="bulk-assign-text-input"
+            placeholder="Y&ouml;netmen ad&inodot;n&inodot; yaz&inodot;n..."
+            type="text"
+          />
+        </div>
+      </div>
+      <div class="form-actions">
+        <button
+          class="btn btn-danger"
+          id="btn-bulk-assign-cancel"
+          type="button"
+        >
+          &Idot;ptal
+        </button>
+        <button
+          class="btn btn-success"
+          id="btn-execute-bulk-assign"
+          type="button"
+        >
+          <i class="fas fa-check"></i> Atamay&inodot; Tamamla
+        </button>
+      </div>
+      <div
+        class="modal-loading-overlay"
+        hidden=""
+        id="bulk-assign-loading-overlay"
+      >
+        <div class="spinner"></div>
+        <p id="bulk-assign-loading-text">
+          &Idot;&scedil;lem y&uuml;r&uuml;t&uuml;l&uuml;yor, l&uuml;tfen
+          bekleyin...
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+<!--
+TOTAL_LINES: 542
+HAS_PLACEHOLDERS: NO
+OMITTED_ANY_CODE: NO
+IS_THIS_THE_COMPLETE_FILE: YES
+-->

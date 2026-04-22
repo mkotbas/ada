@@ -1,0 +1,171 @@
+[hidden] { display: none !important; }
+
+.text-green { color: #22c55e; }
+.modal-bullets { font-size: 12px; margin-top: 10px; text-align: left; padding-left: 20px; }
+.mt-15 { margin-top: 15px; }
+.mt-20 { margin-top: 20px; }
+
+
+/* fide/modules/veritabani-yonetim/veritabani-yonetim.css */
+
+#db-manager-wrapper { display: flex; flex-direction: column; gap: 30px; }
+
+/* İstatistik Grid */
+.db-stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; margin-top: 15px; }
+.db-stat-card { background: white; border-radius: 14px; padding: 20px; display: flex; align-items: center; gap: 15px; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); }
+.stat-icon { width: 48px; height: 48px; background-color: #eff6ff; color: #3b82f6; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; }
+.stat-content { display: flex; flex-direction: column; }
+.stat-label { font-size: 11px; color: #64748b; font-weight: 700; text-transform: uppercase; }
+.stat-value { font-size: 24px; font-weight: 800; color: #1e293b; margin-top: 2px; }
+
+/* Tablolar */
+.table-responsive { overflow-x: auto; border-radius: 12px; border: 1px solid #e2e8f0; background-color: #fff; margin-top: 15px; }
+.db-management-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+.db-management-table thead th { background-color: #f8fafc; color: #475569; font-weight: 700; padding: 16px 20px; border-bottom: 2px solid #e2e8f0; text-align: left; }
+.db-management-table tbody td { padding: 16px 20px; border-bottom: 1px solid #f1f5f9; color: #1e293b; vertical-align: middle; }
+
+
+.db-management-table { min-width: 980px; }
+.db-management-table .action-cell { white-space: nowrap; width: 1%; text-align: center; }
+.db-management-table .action-cell > button,
+.db-management-table .action-cell > label {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: max-content;
+  white-space: nowrap;
+  vertical-align: middle;
+  flex-shrink: 0;
+}
+.db-management-table .action-cell > button + button,
+.db-management-table .action-cell > button + label,
+.db-management-table .action-cell > label + button,
+.db-management-table .action-cell > label + label {
+  margin-left: 8px;
+}
+.db-management-table .action-cell .btn-sm {
+  min-height: 34px;
+}
+
+/* Modal Tasarımı */
+.db-modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.7); z-index: 2500; display: flex; align-items: center; justify-content: center; padding: 20px; }
+.db-modal-content { background: #fff; width: 100%; max-width: 620px; border-radius: 20px; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.3); overflow: hidden; display: flex; flex-direction: column; }
+.db-modal-header { padding: 24px; border-bottom: 1px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center; }
+.db-modal-header h3 { margin: 0; color: #0f172a; font-size: 18px; }
+.db-modal-close { background: none; border: none; font-size: 20px; color: #94a3b8; cursor: pointer; transition: color 0.2s; }
+.db-modal-close:hover { color: #ef4444; }
+.db-modal-body { padding: 24px; display: flex; flex-direction: column; gap: 20px; max-height: 65vh; overflow-y: auto; }
+.db-modal-footer { padding: 20px 24px; background: #f8fafc; border-top: 1px solid #e2e8f0; display: flex; justify-content: flex-end; gap: 12px; }
+
+/* MODAL KART SEÇENEKLERİ */
+.db-card-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+.db-card-option { cursor: pointer; position: relative; }
+.db-card-option input { position: absolute; opacity: 0; }
+
+.card-option-content {
+    border: 2px solid #e2e8f0; border-radius: 12px; padding: 20px; text-align: center;
+    transition: all 0.2s ease; height: 100%; display: flex; flex-direction: column; align-items: center; gap: 12px;
+}
+.db-card-option input:checked + .card-option-content { border-color: #3b82f6; background-color: #eff6ff; box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15); }
+
+.card-option-icon { width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 20px; }
+.icon-danger { background-color: #fee2e2; color: #ef4444; }
+.icon-primary { background-color: #dbeafe; color: #3b82f6; }
+
+.card-option-info strong { display: block; font-size: 15px; margin-bottom: 4px; color: #1e293b; }
+.card-option-info small { font-size: 12px; color: #64748b; line-height: 1.4; display: block; }
+
+/* MİNİ SEÇİM KARTLARI */
+.db-selection-list { display: flex; flex-direction: column; gap: 10px; }
+.db-card-option-mini { cursor: pointer; position: relative; }
+.db-card-option-mini input { position: absolute; opacity: 0; }
+
+.mini-card-content {
+    display: flex; align-items: center; gap: 15px; padding: 16px; border-radius: 12px;
+    border: 1px solid #e2e8f0; background: #fff; transition: all 0.2s ease;
+}
+.db-card-option-mini:hover .mini-card-content { border-color: #cbd5e1; background: #f8fafc; }
+.db-card-option-mini input:checked + .mini-card-content { border-color: #3b82f6; background-color: #eff6ff; }
+
+.mini-card-icon { width: 44px; height: 44px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+.mini-card-info { display: flex; flex-direction: column; gap: 2px; }
+.mini-card-info strong { font-size: 14px; color: #1e293b; }
+.mini-card-info small { font-size: 12px; color: #64748b; }
+
+.db-modal-section-header { font-size: 11px; text-transform: uppercase; color: #94a3b8; font-weight: 800; letter-spacing: 0.05em; margin: 10px 0 5px 5px; }
+
+/* Form ve Analiz Kutuları */
+.db-form-group { display: flex; flex-direction: column; gap: 8px; }
+.db-form-group label { font-weight: 700; color: #334155; font-size: 14px; }
+.db-input { width: 100%; padding: 12px; border-radius: 10px; border: 1px solid #cbd5e1; font-size: 14px; outline: none; transition: border-color 0.2s; }
+.db-input:focus { border-color: #3b82f6; }
+
+.db-analysis-info-card { background-color: #f0f9ff; border: 1px solid #bae6fd; color: #0369a1; padding: 15px; border-radius: 12px; font-size: 13px; }
+.db-stat-card-mini { display: flex; align-items: center; gap: 10px; padding: 10px; color: #64748b; font-size: 13px; }
+
+/* Badge ve Uyarı */
+.warning-text { background-color: #fff1f2; border: 1px solid #fecdd3; color: #9f1239; padding: 12px 15px; border-radius: 10px; font-size: 13px; font-weight: 500; }
+.badge { padding: 4px 10px; border-radius: 999px; font-size: 11px; font-weight: 700; display: inline-block; }
+.badge-danger { background-color: #fee2e2; color: #991b1b; }
+.badge-warning { background-color: #fef3c7; color: #92400e; }
+.badge-secondary { background-color: #f1f5f9; color: #475569; }
+
+.card-header-flex { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+
+@media (max-width: 500px) {
+    .db-card-grid { grid-template-columns: 1fr; }
+}
+/* Talimat: inline style yok */
+.db-management-table .col-func { width: 25%; }
+.db-management-table .col-desc { width: 40%; }
+.db-management-table .col-impact { width: 20%; }
+.db-management-table .col-action { width: 15%; text-align: center; }
+
+.db-management-table .col-backup-name { width: 30%; }
+.db-management-table .col-backup-scope { width: 45%; }
+.db-management-table .col-backup-type { width: 15%; }
+.db-management-table .col-backup-action { width: 10%; text-align: center; }
+
+.db-management-table label.btn-primary { cursor: pointer; margin-bottom: 0; }
+
+/* Mini kart ikon temaları (Talimat: JS style yok) */
+.mini-card-icon { display: flex; align-items: center; justify-content: center; }
+.mini-card-icon-ayarlar { background-color: rgba(99, 102, 241, 0.12); color: #6366f1; }
+.mini-card-icon-users { background-color: rgba(59, 130, 246, 0.12); color: #3b82f6; }
+.mini-card-icon-bayiler { background-color: rgba(16, 185, 129, 0.12); color: #10b981; }
+.mini-card-icon-denetim_raporlari { background-color: rgba(245, 158, 11, 0.12); color: #f59e0b; }
+.mini-card-icon-excel_verileri { background-color: rgba(139, 92, 246, 0.12); color: #8b5cf6; }
+.mini-card-icon-denetim_geri_alinanlar { background-color: rgba(239, 68, 68, 0.12); color: #ef4444; }
+.mini-card-icon-user_devices { background-color: rgba(100, 116, 139, 0.12); color: #64748b; }
+
+/* Temizlik & Bakım ek seçenekleri */
+.db-clean-option { margin-top: 12px; }
+.db-clean-option-hint { display: block; margin-top: 6px; }
+.db-checkbox-row { display: flex; gap: 10px; align-items: flex-start; }
+.db-checkbox-row input[type="checkbox"] { margin-top: 2px; }
+
+
+.db-clean-stats-list { margin: 0; padding-left: 20px; }
+.db-clean-stat-item { margin-bottom: 10px; }
+.db-clean-stat-reason { display: block; margin-top: 4px; color: #64748b; }
+.db-clean-checkbox-row { padding: 10px 0; border-top: 1px solid #e2e8f0; }
+.db-clean-checkbox-row:first-child { border-top: none; padding-top: 0; }
+.db-clean-checkbox-row span { display: flex; flex-direction: column; gap: 4px; }
+.db-clean-checkbox-row .db-clean-option-hint { color: #64748b; }
+
+
+.db-clean-stage-card { margin-top: 0; }
+.db-clean-stage-list { margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 10px; }
+.db-clean-stage-item small { display: block; margin-top: 4px; color: #64748b; }
+
+@media (max-width: 1024px) {
+  .db-management-table {
+    min-width: 920px;
+  }
+}
+/*
+TOTAL_LINES: 171
+HAS_PLACEHOLDERS: NO
+OMITTED_ANY_CODE: NO
+IS_THIS_THE_COMPLETE_FILE: YES
+*/
